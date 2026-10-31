@@ -5,9 +5,9 @@
   },
   "id": "ivanciunicolaeandrei.alt_spam_helper",
   "name": "Alt Spam Helper",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "developer": "Ivanciunicolaeandrei",
-  "description": "Imports legacy GDR1 replay files and analyses alternating-button input patterns.",
+  "description": "Imports GDR1 replay files and analyses alternating-button input patterns. GDR2 is not yet supported.",
   "settings": {
     "macro_file": {
       "type": "file",
@@ -25,7 +25,8 @@
               "*.txt",
               "*.macro",
               "*.replay",
-              "*.dat"
+              "*.dat",
+              "*.gdr2"
             ],
             "description": "Macro files"
           }
@@ -35,7 +36,7 @@
     "macro_status": {
       "type": "string",
       "name": "Macro analysis",
-      "description": "Reserved for a future on-screen analysis result; current results appear in the Geode log.",
+      "description": "Shows the result of the latest replay import.",
       "default": "No macro selected."
     },
     "helper_enabled": {
