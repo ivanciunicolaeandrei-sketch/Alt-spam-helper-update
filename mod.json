@@ -1,0 +1,25 @@
+{
+  "geode": "5.11.2",
+  "gd": { "android": "2.2081" },
+  "id": "ivanciunicolaeandrei.alt_spam_helper",
+  "name": "Alt Spam Helper",
+  "version": "0.1.0",
+  "developer": "Ivanciunicolaeandrei",
+  "description": "Two-finger activated input helper prototype.",
+  "settings": {
+    "helper_enabled": {
+      "type": "bool",
+      "name": "Helper Enabled",
+      "description": "Allow the two-finger gesture to activate the helper.",
+      "default": true
+    },
+    "spam_cps": {
+      "type": "int",
+      "name": "Tap rate",
+      "description": "Target complete press/release cycles per second.",
+      "default": 12,
+      "min": 2,
+      "max": 30
+    }
+  }
+}
