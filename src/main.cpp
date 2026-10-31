@@ -97,7 +97,7 @@ namespace {
         // for non-GDR macro files.
         std::string data(bytes.begin(), bytes.end());
         static const std::regex buttonField(
-            R"REGEX("(?:button|btn)"\\s*:\\s*([12]))REGEX",
+            R"REGEX("(?:button|btn)"\s*:\s*([12]))REGEX",
             std::regex_constants::icase
         );
         std::vector<int> buttons;
