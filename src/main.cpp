@@ -1,15 +1,20 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/loader/SettingV3.hpp>
 #include <set>
 #include <algorithm>
+#include <fstream>
+#include <regex>
+#include <string>
 
 using namespace geode::prelude;
 
 namespace {
     bool s_twoFingerHeld = false;
+    bool s_altSpamDetected = false;
 
     bool helperEnabled() {
-        return Mod::get()->getSettingValue<bool>("helper_enabled");
+        return Mod::get()->getSettingValue<bool>("helper_enabled") && s_altSpamDetected;
     }
 
     int tapRate() {
@@ -17,6 +22,55 @@ namespace {
             static_cast<int>(Mod::get()->getSettingValue<int64_t>("spam_cps")),
             2, 30
         );
+    }
+
+    void analyseMacro(std::filesystem::path const& path) {
+        s_altSpamDetected = false;
+
+        if (path.empty()) {
+            log::info("Alt Spam Helper: no macro selected.");
+            return;
+        }
+
+        std::ifstream input(path, std::ios::binary);
+        if (!input) {
+            log::warn("Alt Spam Helper: could not open selected macro: {}", path.string());
+            return;
+        }
+
+        std::string data(
+            (std::istreambuf_iterator<char>(input)),
+            std::istreambuf_iterator<char>()
+        );
+
+        // Initial JSON-style event parser. It looks for a sequence of alternating
+        // button 1 and button 2 events. Other formats need dedicated parsers.
+        static const std::regex buttonField(R"("button"\s*:\s*([12]))");
+        std::vector<int> buttons;
+        for (std::sregex_iterator it(data.begin(), data.end(), buttonField), end; it != end; ++it) {
+            buttons.push_back(std::stoi((*it)[1].str()));
+        }
+
+        int alternating = 0;
+        for (size_t i = 1; i < buttons.size(); ++i) {
+            if (buttons[i] != buttons[i - 1]) {
+                ++alternating;
+            } else {
+                alternating = 0;
+            }
+            if (alternating >= 5) {
+                s_altSpamDetected = true;
+                break;
+            }
+        }
+
+        if (s_altSpamDetected) {
+            log::info("Alt Spam Helper: alternating button pattern detected. Alt Spam helper enabled.");
+        } else if (buttons.empty()) {
+            log::warn("Alt Spam Helper: file selected, but no supported JSON button events were found.");
+        } else {
+            log::info("Alt Spam Helper: no sustained alternating button pattern found.");
+        }
     }
 }
 
@@ -88,8 +142,13 @@ class $modify(AltSpamHelperPlayLayer, PlayLayer) {
     }
 };
 
-// The first build establishes the invisible two-finger detector and settings.
-// Automated playback is kept disabled until the Android input hooks are verified.
 $on_mod(Loaded) {
+    auto selected = Mod::get()->getSettingValue<std::filesystem::path>("macro_file");
+    analyseMacro(selected);
+
+    listenForSettingChanges("macro_file", [](std::filesystem::path const& path) {
+        analyseMacro(path);
+    });
+
     log::info("Alt Spam Helper prototype loaded. Tap rate setting: {}", tapRate());
 }
