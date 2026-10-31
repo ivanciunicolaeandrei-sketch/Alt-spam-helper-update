@@ -5,9 +5,9 @@
   },
   "id": "ivanciunicolaeandrei.alt_spam_helper",
   "name": "Alt Spam Helper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "developer": "Ivanciunicolaeandrei",
-  "description": "Prototype macro importer and alternating-button pattern detector.",
+  "description": "Imports legacy GDR1 replay files and analyses alternating-button input patterns.",
   "settings": {
     "macro_file": {
       "type": "file",
@@ -20,6 +20,7 @@
           {
             "files": [
               "*.gdr",
+              "*.gdr.json",
               "*.json",
               "*.txt",
               "*.macro",
