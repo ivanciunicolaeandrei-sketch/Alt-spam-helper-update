@@ -83,7 +83,7 @@ $on_mod(Loaded) {
     auto selected = Mod::get()->getSettingValue<std::filesystem::path>("macro_file");
     analyseMacro(selected);
 
-    listenForSettingChanges("macro_file", [](std::filesystem::path const& path) {
+    listenForSettingChanges<std::filesystem::path>("macro_file", [](std::filesystem::path const& path) {
         analyseMacro(path);
     });
 
