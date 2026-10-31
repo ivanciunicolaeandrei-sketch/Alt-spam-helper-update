@@ -1,11 +1,13 @@
 {
   "geode": "5.11.2",
-  "gd": { "android": "2.2081" },
+  "gd": {
+    "android": "2.2081"
+  },
   "id": "ivanciunicolaeandrei.alt_spam_helper",
   "name": "Alt Spam Helper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "developer": "Ivanciunicolaeandrei",
-  "description": "Imports macro files and checks for alternating wave input patterns.",
+  "description": "Prototype macro importer and alternating-button pattern detector.",
   "settings": {
     "macro_file": {
       "type": "file",
@@ -15,26 +17,36 @@
       "control": {
         "dialog": "open",
         "filters": [
-          { "files": ["*.gdr", "*.json", "*.txt", "*.macro", "*.replay", "*.dat"], "description": "Macro files" }
+          {
+            "files": [
+              "*.gdr",
+              "*.json",
+              "*.txt",
+              "*.macro",
+              "*.replay",
+              "*.dat"
+            ],
+            "description": "Macro files"
+          }
         ]
       }
     },
     "macro_status": {
       "type": "string",
       "name": "Macro analysis",
-      "description": "Status of the selected macro.",
+      "description": "Reserved for a future on-screen analysis result; current results appear in the Geode log.",
       "default": "No macro selected."
     },
     "helper_enabled": {
       "type": "bool",
       "name": "Helper Enabled",
-      "description": "Enable the two-finger helper gesture.",
+      "description": "Reserved toggle for the future gameplay helper; no automated tapping is implemented yet.",
       "default": true
     },
     "spam_cps": {
       "type": "int",
       "name": "Tap rate",
-      "description": "Target complete press/release cycles per second.",
+      "description": "Reserved setting for a future helper; changing this currently has no gameplay effect.",
       "default": 12,
       "min": 2,
       "max": 30
