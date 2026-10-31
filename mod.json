@@ -5,12 +5,30 @@
   "name": "Alt Spam Helper",
   "version": "0.1.0",
   "developer": "Ivanciunicolaeandrei",
-  "description": "Two-finger activated input helper prototype.",
+  "description": "Imports macro files and checks for alternating wave input patterns.",
   "settings": {
+    "macro_file": {
+      "type": "file",
+      "name": "Import macro",
+      "description": "Choose a macro file. The mod analyses it after selection.",
+      "default": "",
+      "control": {
+        "dialog": "open",
+        "filters": [
+          { "files": ["*.gdr", "*.json", "*.txt", "*.macro", "*.replay", "*.dat"], "description": "Macro files" }
+        ]
+      }
+    },
+    "macro_status": {
+      "type": "string",
+      "name": "Macro analysis",
+      "description": "Status of the selected macro.",
+      "default": "No macro selected."
+    },
     "helper_enabled": {
       "type": "bool",
       "name": "Helper Enabled",
-      "description": "Allow the two-finger gesture to activate the helper.",
+      "description": "Enable the two-finger helper gesture.",
       "default": true
     },
     "spam_cps": {
