@@ -25,18 +25,16 @@ namespace {
             return;
         }
 
-        // Read a bounded amount so a malformed/huge file cannot consume
-        // unlimited memory during analysis.
         constexpr size_t MAX_MACRO_BYTES = 16 * 1024 * 1024;
         std::string data;
         data.resize(MAX_MACRO_BYTES);
         input.read(data.data(), static_cast<std::streamsize>(data.size()));
         data.resize(static_cast<size_t>(input.gcount()));
 
-        // Prototype support: JSON-like event objects using "button" or "btn"
-        // with values 1/2. Binary formats such as .gdr are not decoded yet.
+        // Prototype support for JSON-like button fields. Binary formats such
+        // as .gdr are not decoded yet.
         static const std::regex buttonField(
-            R"("(?:button|btn)"\s*:\s*([12]))",
+            R"REGEX("(?:button|btn)"\s*:\s*([12]))REGEX",
             std::regex_constants::icase
         );
 
@@ -57,7 +55,6 @@ namespace {
             }
         }
 
-        // Five consecutive switches means at least six alternating events.
         s_altSpamDetected = longestAlternation >= 5;
 
         if (s_altSpamDetected) {
